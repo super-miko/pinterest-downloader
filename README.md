@@ -54,4 +54,4 @@ Para baixar mais imagens, role a página antes de iniciar o download.
 
 ## 👤 Autor
 
-Desenvolvido por você 😎
+miko
