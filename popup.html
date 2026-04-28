@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pinterest Downloader</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      width: 320px;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #e60023 0%, #ad081b 100%);
+      padding: 18px 20px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header svg {
+      width: 28px;
+      height: 28px;
+      fill: white;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.3px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      margin-top: 1px;
+    }
+
+    .body {
+      padding: 16px 18px;
+    }
+
+    .status-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .status-row:last-child { margin-bottom: 0; }
+
+    .label {
+      font-size: 11px;
+      color: #888;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f0f0f0;
+    }
+
+    .value.accent { color: #e60023; }
+    .value.green { color: #22c55e; }
+    .value.yellow { color: #f59e0b; }
+
+    #page-url {
+      font-size: 11px;
+      color: #666;
+      word-break: break-all;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      background: #1a1a1a;
+      padding: 8px 10px;
+      border-radius: 7px;
+      border: 1px solid #2a2a2a;
+    }
+
+    .progress-wrap {
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #2a2a2a;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #e60023, #ff6b6b);
+      border-radius: 99px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .log-box {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 10px;
+      height: 80px;
+      overflow-y: auto;
+      font-size: 11px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      display: none;
+      font-family: monospace;
+    }
+
+    .log-box .log-line { color: #888; }
+    .log-box .log-ok { color: #22c55e; }
+    .log-box .log-err { color: #ef4444; }
+    .log-box .log-info { color: #60a5fa; }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #e60023, #ad081b);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(230,0,35,0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #1a1a1a;
+      color: #888;
+      border: 1px solid #2a2a2a;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .btn-secondary:hover { background: #222; color: #ccc; }
+
+    .tip {
+      font-size: 11px;
+      color: #555;
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .tip strong { color: #888; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-idle { background: #222; color: #666; }
+    .badge-running { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .badge-done { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .badge-error { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+    .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .not-pinterest {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .not-pinterest .icon { font-size: 32px; margin-bottom: 10px; }
+    .not-pinterest p { font-size: 13px; color: #666; line-height: 1.5; }
+    .not-pinterest strong { color: #e60023; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+    </svg>
+    <div>
+      <h1>Pinterest Downloader</h1>
+      <p>Baixe pastas inteiras em .zip</p>
+    </div>
+  </div>
+
+  <div id="main-content" class="body">
+    <div id="page-url">Verificando página...</div>
+
+    <div class="status-card" id="status-card">
+      <div class="status-row">
+        <span class="label">Status</span>
+        <span class="badge badge-idle" id="status-badge">Aguardando</span>
+      </div>
+      <div class="status-row">
+        <span class="label">Imagens encontradas</span>
+        <span class="value accent" id="found-count">0</span>
+      </div>
+      <div class="status-row">
+        <span class="label">Baixadas</span>
+        <span class="value green" id="done-count">0</span>
+      </div>
+    </div>
+
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-label">
+        <span>Progresso</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+
+    <div class="log-box" id="log-box"></div>
+
+    <button class="btn btn-primary" id="btn-start">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Baixar Pasta como ZIP
+    </button>
+    <button class="btn btn-secondary" id="btn-scroll" style="display:none">
+      🔄 Rolar página para carregar mais
+    </button>
+
+    <p class="tip" id="tip-text">
+      Abra uma <strong>pasta do Pinterest</strong> e clique em baixar.<br/>
+      Role a página para carregar mais imagens antes de baixar.
+    </p>
+  </div>
+
+  <div id="not-pinterest" style="display:none">
+    <div class="not-pinterest">
+      <div class="icon">📌</div>
+      <p>Esta extensão funciona apenas no <strong>Pinterest</strong>.<br/><br/>
+      Abra uma pasta, como:<br/>
+      <strong>pinterest.com/usuario/pasta/</strong></p>
+    </div>
+  </div>
+
+  <script src="minizip.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
