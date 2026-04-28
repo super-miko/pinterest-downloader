@@ -1,34 +1,57 @@
-# Pinterest Board Downloader — Extensão para Chrome
+# 📌 Pinterest Downloader
 
-Baixa todas as imagens de uma pasta do Pinterest e salva como `.zip`.
+Baixe **todas as imagens de uma página do Pinterest** de forma automática e rápida.
 
-## 📦 Como instalar
+---
 
-1. Abra o Chrome e vá em: `chrome://extensions/`
-2. Ative o **Modo do desenvolvedor** (canto superior direito)
-3. Clique em **"Carregar sem compactação"**
-4. Selecione a pasta `pinterest-downloader`
-5. A extensão aparecerá na barra de ferramentas! 📌
+## ✨ Funcionalidades
 
-## 🚀 Como usar
+* 📥 Baixa todas as imagens visíveis na página
+* 🔄 Funciona com rolagem (carrega mais imagens)
+* 🗂️ Junta tudo em um arquivo .zip
+* ⚡ Interface simples e rápida
 
-1. Acesse uma pasta do Pinterest, ex:  
-   `https://br.pinterest.com/miko037/server-ej/`
-2. **Role a página** para baixo para carregar mais pins (ou use o botão de rolagem automática)
-3. Clique no ícone da extensão na barra do Chrome
-4. Clique em **"Rolar página para carregar mais"** para carregar todos os pins
-5. Clique em **"Baixar Pasta como ZIP"**
-6. O arquivo `.zip` será baixado automaticamente!
+---
 
-## ⚠️ Observações
+## 🧠 Como usar
 
-- Role bastante a página antes de baixar para garantir que todos os pins foram carregados
-- Imagens em alta resolução são baixadas automaticamente
-- Alguns pins podem falhar por restrições de CORS — isso é normal
-- Use apenas para fins pessoais e respeitando os termos do Pinterest
+1. Abra uma página do Pinterest (board)
+2. Role a página para carregar mais imagens
+3. Clique no botão da extensão
+4. Clique em **Baixar**
+5. Pronto! As imagens serão baixadas em um .zip
 
-## 🛠️ Tecnologias
+---
 
-- Chrome Extension Manifest V3
-- JSZip (via CDN)
-- Pinterest DOM scraping
+## 📸 Preview
+
+![Interface](pind1.PNG)
+![Download](pind2.PNG)
+![Zip](pind3.PNG)
+![Resultado](pind4.PNG)
+
+---
+
+## 🛠️ Instalação
+
+1. Clique em **Code → Download ZIP**
+2. Extraia a pasta
+3. Abra o Chrome
+4. Vá para:
+   chrome://extensions/
+5. Ative **Modo desenvolvedor**
+6. Clique em **Carregar sem compactação**
+7. Selecione a pasta do projeto
+
+---
+
+## ⚠️ Observação
+
+A extensão baixa apenas as imagens que já foram carregadas na página.
+Para baixar mais imagens, role a página antes de iniciar o download.
+
+---
+
+## 👤 Autor
+
+Desenvolvido por você 😎
