@@ -26,9 +26,9 @@ Baixe **todas as imagens de uma página do Pinterest** de forma automática e r�
 ## 📸 Preview
 
 ![Interface](assets/pind1.PNG)
-![Download](pind2.PNG)
-![Zip](pind3.PNG)
-![Resultado](pind4.PNG)
+![Download](assets/pind2.PNG)
+![Zip](assets/pind3.PNG)
+![Resultado](assets/pind4.PNG)
 
 ---
 
